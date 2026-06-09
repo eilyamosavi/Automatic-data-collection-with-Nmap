@@ -16,7 +16,6 @@ A simple yet powerful interactive Bash script that performs automated reconnaiss
 - Designed for Docker labs
 
 ---
-
 ## How to Use
 
 ### 1. Start the Docker Lab
@@ -38,7 +37,7 @@ textresults/
     ├── 04_os_scripts.txt
     ├── 05_web_enum.txt
     └── SUMMARY.txt
-
+```
 Technologies
 
 Bash Scripting

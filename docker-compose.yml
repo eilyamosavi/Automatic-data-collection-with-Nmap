@@ -1,0 +1,67 @@
+version: "3.8"
+
+networks:
+  labnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24   # ← subnet جدید (تغییر کرده)
+          gateway: 172.21.0.1
+
+services:
+  kali-admin:
+    image: kalilinux/kali-rolling
+    container_name: kali-administraitor
+    networks:
+      labnet:
+        ipv4_address: 172.21.0.100
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+
+  web1:
+    image: nginx:alpine
+    container_name: web1
+    networks:
+      labnet:
+        ipv4_address: 172.21.0.11
+    ports:
+      - "8081:80"
+
+  web2:
+    image: php:8.2-apache
+    container_name: web2
+    networks:
+      labnet:
+        ipv4_address: 172.21.0.12
+    ports:
+      - "8082:80"
+
+  ssh-server:
+    image: linuxserver/openssh-server
+    container_name: ssh-server
+    networks:
+      labnet:
+        ipv4_address: 172.21.0.13
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - USER_NAME=admin
+      - PASSWORD=admin123
+    ports:
+      - "2222:2222"
+
+  ftp-server:
+    image: fauria/vsftpd
+    container_name: ftp-server
+    networks:
+      labnet:
+        ipv4_address: 172.21.0.14
+    environment:
+      - FTP_USER=ftpuser
+      - FTP_PASS=ftp123
+    ports:
+      - "2121:21"
